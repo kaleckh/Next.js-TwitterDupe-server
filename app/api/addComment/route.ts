@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
             },
         });
 
-        // Determine the color based on the vote valu
+        // Determine the color based on the vote v
         let color;
         switch (data.vote) {
             case 'yes':

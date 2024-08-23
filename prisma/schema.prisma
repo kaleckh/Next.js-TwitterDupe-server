@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id          String    @id @default(cuid())
+  content     String?
+  title       String
+  email       String?
+  categories  String[]
+  thesis      String?
+  yesAction   String?
+  votes       Int?
+  maybeAction String?
+  noAction    String?
+  voted       String[]
+  likes       String[]
+  comments    Comment[]
+  date        DateTime
+  owner       User?     @relation(fields: [email], references: [email])
+  voteRecords Vote[]
+
+  @@map("posts")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  username  String
+  voted     Json[]
+  bio       String?
+  followers String[]
+  following String[]
+  posts     Post[]
+  votes     Vote[]
+  comments  Comment[]
+
+  @@map("users")
+}
+
+model Conversation {
+  id        String    @id @default(cuid())
+  me        String
+  roomName  String
+  recipient String
+  messages  Message[]
+  date      DateTime
+
+  @@map("conversations")
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  date           DateTime     @default(now())
+  message        String
+  userName       String
+  status         String
+  recipient      String
+
+  @@map("messages")
+}
+
+model Vote {
+  id     String @id @default(cuid())
+  vote   String
+  userId String
+  postId String
+  user   User   @relation(fields: [userId], references: [id])
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@map("votes")
+}
+
+model Comment {
+  id       String    @id @default(cuid())
+  comment  String
+  vote     String
+  postId   String
+  userId   String
+  username String
+  date     DateTime  @default(now())
+  post     Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parentId String? // Nullable field for the parent comment
+  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies  Comment[] @relation("CommentReplies")
+}

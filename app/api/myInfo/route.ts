@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
     try {
         const posts = await prisma.user.findFirst({
             where: {
-                email: id ? JSON.parse(id) : undefined
+                email: id ? id : undefined
             }
         })
         console.log(posts, 'this is a user')

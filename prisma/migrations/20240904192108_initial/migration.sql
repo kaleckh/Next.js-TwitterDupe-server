@@ -22,6 +22,8 @@ CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "username" TEXT NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "location" TEXT,
     "voted" JSONB[],
     "bio" TEXT,
     "followers" TEXT[],

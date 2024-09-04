@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:postgres@localhost:5432/postgres"
+  url      = "postgresql://postgres:postgres@localhost:5432/new_name"
 }
 
 model Post {
@@ -32,6 +32,8 @@ model User {
   id        String    @id @default(cuid())
   email     String    @unique
   username  String
+  date      DateTime
+  location  String?
   voted     Json[]
   bio       String?
   followers String[]

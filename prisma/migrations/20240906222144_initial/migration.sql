@@ -2,15 +2,7 @@
 CREATE TABLE "posts" (
     "id" TEXT NOT NULL,
     "content" TEXT,
-    "title" TEXT NOT NULL,
     "email" TEXT,
-    "categories" TEXT[],
-    "thesis" TEXT,
-    "yesAction" TEXT,
-    "votes" INTEGER,
-    "maybeAction" TEXT,
-    "noAction" TEXT,
-    "voted" TEXT[],
     "likes" TEXT[],
     "date" TIMESTAMP(3) NOT NULL,
 
@@ -24,7 +16,6 @@ CREATE TABLE "users" (
     "username" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
     "location" TEXT,
-    "voted" JSONB[],
     "bio" TEXT,
     "followers" TEXT[],
     "following" TEXT[],
@@ -57,16 +48,6 @@ CREATE TABLE "messages" (
 );
 
 -- CreateTable
-CREATE TABLE "votes" (
-    "id" TEXT NOT NULL,
-    "vote" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "postId" TEXT NOT NULL,
-
-    CONSTRAINT "votes_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Comment" (
     "id" TEXT NOT NULL,
     "comment" TEXT NOT NULL,
@@ -88,12 +69,6 @@ ALTER TABLE "posts" ADD CONSTRAINT "posts_email_fkey" FOREIGN KEY ("email") REFE
 
 -- AddForeignKey
 ALTER TABLE "messages" ADD CONSTRAINT "messages_conversationId_fkey" FOREIGN KEY ("conversationId") REFERENCES "conversations"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "votes" ADD CONSTRAINT "votes_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "votes" ADD CONSTRAINT "votes_postId_fkey" FOREIGN KEY ("postId") REFERENCES "posts"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Comment" ADD CONSTRAINT "Comment_postId_fkey" FOREIGN KEY ("postId") REFERENCES "posts"("id") ON DELETE CASCADE ON UPDATE CASCADE;

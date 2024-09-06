@@ -10,20 +10,11 @@ datasource db {
 model Post {
   id          String    @id @default(cuid())
   content     String?
-  title       String
-  email       String?
-  categories  String[]
-  thesis      String?
-  yesAction   String?
-  votes       Int?
-  maybeAction String?
-  noAction    String?
-  voted       String[]
+  email       String? 
   likes       String[]
   comments    Comment[]
   date        DateTime
   owner       User?     @relation(fields: [email], references: [email])
-  voteRecords Vote[]
 
   @@map("posts")
 }
@@ -33,13 +24,11 @@ model User {
   email     String    @unique
   username  String
   date      DateTime
-  location  String?
-  voted     Json[]
+  location  String?  
   bio       String?
   followers String[]
   following String[]
-  posts     Post[]
-  votes     Vote[]
+  posts     Post[]  
   comments  Comment[]
 
   @@map("users")
@@ -69,16 +58,7 @@ model Message {
   @@map("messages")
 }
 
-model Vote {
-  id     String @id @default(cuid())
-  vote   String
-  userId String
-  postId String
-  user   User   @relation(fields: [userId], references: [id])
-  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
 
-  @@map("votes")
-}
 
 model Comment {
   id       String    @id @default(cuid())

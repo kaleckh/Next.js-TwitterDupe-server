@@ -5,12 +5,14 @@ const prisma = new PrismaClient()
 
 export async function POST(req: Request) {
     const data = await req.json()
-    console.log(data.categories, 'this is the data I need')
+    
 
     try {
         const test = await prisma.post.create({
             data: {
-                content
+                content: data.content,
+                date: new Date,
+                email: JSON.parse(data.email.toLowerCase()),
             }
         })
         return NextResponse.json({ hello: test });

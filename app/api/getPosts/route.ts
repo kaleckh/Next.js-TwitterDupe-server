@@ -1,18 +1,19 @@
-import { PrismaClient } from '@prisma/client'
-import { NextResponse, NextRequest } from 'next/server'
+import { PrismaClient } from '@prisma/client';
+import { NextResponse, NextRequest } from 'next/server';
 
-// import { useAuth, useUser } from "@clerk/clerk-expo";
+const prisma = new PrismaClient();
 
-const prisma = new PrismaClient()
 export async function GET() {
-
-    console.log("hitting endpoint")
-    try {
-        const posts = await prisma.post.findMany()
-        console.log(await posts, 'this is post info')
-        return NextResponse.json({ Posts: await posts });
+    try {        
+        const posts = await prisma.post.findMany({
+            orderBy: {
+                date: 'desc',
+            },
+        });
+        console.log(posts, 'this is post info');
+        return NextResponse.json({ Posts: posts });
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        return NextResponse.json({ error: 'Failed to fetch posts' }, { status: 500 });
     }
-
-}   
+}

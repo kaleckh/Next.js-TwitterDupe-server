@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { NextResponse, NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
@@ -8,6 +8,9 @@ export async function GET() {
         const posts = await prisma.post.findMany({
             orderBy: {
                 date: 'desc',
+            },
+            include: {
+                comments: true, // Assumes your comments model is related to posts
             },
         });
         console.log(posts, 'this is post info');

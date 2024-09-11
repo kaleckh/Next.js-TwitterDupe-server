@@ -7,36 +7,17 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     console.log(data, "this is the data");
 
-    try {
-        // Create the new comment, including parentId if it exists
+    try {        
         const newComment = await prisma.comment.create({
             data: {
                 comment: data.comment,
                 username: data.userName,
                 postId: data.postId,
                 userId: data.userId,
-                parentId: data.commentId || null,
-                vote: data.vote // Include parentId if provided, otherwise set to null
+                parentId: data.commentId || null,                
             },
         });
-
-        // Determine the color based on the vote v
-        let color;
-        switch (data.vote) {
-            case 'yes':
-                color = 'green';
-                break;
-            case 'no':
-                color = 'red';
-                break;
-            case 'maybe':
-                color = 'yellow';
-                break;
-            default:
-                color = 'grey'; // Default color if vote is not recognized
-        }
-
-        // Fetch all comments related to the postId after the new comment is created
+    
         const allComments = await prisma.comment.findMany({
             where: {
                 postId: data.postId,
@@ -47,7 +28,7 @@ export async function POST(req: NextRequest) {
         });
 
         // Return the updated list of comments and the color associated with the vote
-        return NextResponse.json({ comments: allComments, color });
+        return NextResponse.json({ comments: allComments });
     } catch (error) {
         console.log(error);
         return NextResponse.json({ error: 'An error occurred' }, { status: 500 });

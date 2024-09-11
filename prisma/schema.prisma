@@ -62,8 +62,7 @@ model Message {
 
 model Comment {
   id       String    @id @default(cuid())
-  comment  String
-  vote     String
+  comment  String  
   postId   String
   userId   String
   username String
@@ -73,4 +72,5 @@ model Comment {
   parentId String? // Nullable field for the parent comment
   parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
   replies  Comment[] @relation("CommentReplies")
+  @@map("comments")
 }

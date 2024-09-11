@@ -5,23 +5,51 @@ const prisma = new PrismaClient()
 
 export async function POST(req: NextRequest) {
     const data = await req.json()
-    const id = req.nextUrl.searchParams.get('id')
-    console.log(data, 'this is the important data')
-    console.log(data.likes, 'these are the likes')
+    
+    const userId = data.userId; 
+    const postId = data.postId; 
+    console.log(postId, 'this is the data')
     try {
-        const updateLikes = await prisma.posts.update({
+        // Fetch the current likes array from the post
+        const existingPost = await prisma.post.findUnique({
             where: {
-                id: id ? id : ''
+                id: postId ? postId : ''
+            },
+            select: {
+                likes: true
+            }
+        });
+
+        if (!existingPost) {
+            return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+        }
+
+        // Ensure likes is always an array
+        let currentLikes = existingPost.likes || []; // If likes is null, initialize as an empty array
+
+        // Check if the userId exists in the likes array
+        if (currentLikes.includes(userId)) {
+            // Remove the userId if it exists
+            currentLikes = currentLikes.filter(like => like !== userId);
+        } else {
+            // Add the userId if it doesn't exist
+            currentLikes.push(userId);
+        }
+
+        // Update the likes array in the database
+        const updateLikes = await prisma.post.update({
+            where: {
+                id: postId ? postId : ''
             },
             data: {
-                likes: data.likes,
-                content: data.content,
-                comments: data.comments,
-                
+                likes: currentLikes,  // Ensure this array is valid
             },
-        })
-        return await NextResponse.json({  update: updateLikes });
+        });
+
+        // Return the updated post with likes
+        return NextResponse.json({ update: updateLikes });
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        return NextResponse.json({ error: 'An error occurred while updating likes' }, { status: 500 });
     }
-}   
+}

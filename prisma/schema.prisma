@@ -8,13 +8,13 @@ datasource db {
 }
 
 model Post {
-  id          String    @id @default(cuid())
-  content     String?
-  email       String? 
-  likes       String[]
-  comments    Comment[]
-  date        DateTime
-  owner       User?     @relation(fields: [email], references: [email])
+  id       String    @id @default(cuid())
+  content  String?
+  email    String?
+  likes    String[]
+  comments Comment[]
+  date     DateTime
+  owner    User?     @relation(fields: [email], references: [email])
 
   @@map("posts")
 }
@@ -24,11 +24,11 @@ model User {
   email     String    @unique
   username  String
   date      DateTime
-  location  String?  
+  location  String?
   bio       String?
   followers String[]
   following String[]
-  posts     Post[]  
+  posts     Post[]
   comments  Comment[]
 
   @@map("users")
@@ -58,11 +58,9 @@ model Message {
   @@map("messages")
 }
 
-
-
 model Comment {
   id       String    @id @default(cuid())
-  comment  String  
+  comment  String
   postId   String
   userId   String
   username String
@@ -72,5 +70,6 @@ model Comment {
   parentId String? // Nullable field for the parent comment
   parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
   replies  Comment[] @relation("CommentReplies")
+
   @@map("comments")
 }

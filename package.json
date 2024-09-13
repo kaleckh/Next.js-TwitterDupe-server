@@ -11,11 +11,21 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.650.0",
     "@prisma/client": "^5.19.1",
+    "@supabase/supabase-js": "^2.45.4",
+    "form-data": "^4.0.0",
+    "formdata-node": "^6.0.3",
+    "formidable": "^3.5.1",
+    "multer": "^1.4.5-lts.1",
+    "multiparty": "^4.2.3",
     "next": "14.2.6",
+    "next-connect": "^1.0.0",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/formidable": "^3.4.5",
+    "@types/multer": "^1.4.12",
+    "@types/multiparty": "^0.0.36",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

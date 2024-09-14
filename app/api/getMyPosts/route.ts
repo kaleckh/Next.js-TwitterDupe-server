@@ -10,7 +10,13 @@ export async function GET(req: NextRequest) {
         const test = await prisma.post.findMany({
             where: {
                 email: email || ''
-            }
+            },
+            orderBy: {
+                date: 'desc',
+            },
+            include: {
+                comments: true, // Assumes your comments model is related to posts
+            },
         })
         console.log(test, "this is get all posts info")
         return NextResponse.json({ Posts: test });

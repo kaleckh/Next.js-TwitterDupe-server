@@ -4,8 +4,7 @@ import { NextResponse, NextRequest } from 'next/server';
 const prisma = new PrismaClient();
 
 export async function GET(req: NextRequest) {
-    const postId = req.nextUrl.searchParams.get('id');
-    const userId = req.nextUrl.searchParams.get('userId'); // Assuming userId is passed as a query parameter
+    const postId = req.nextUrl.searchParams.get('id');    
 
     try {
         const post = await prisma.post.findUnique({
@@ -13,21 +12,14 @@ export async function GET(req: NextRequest) {
                 id: postId ? postId : undefined
             },
             include: {
-                voteRecords: {
-                    where: {
-                        userId: userId ? userId : undefined
-                    }
-                }
+                comments: true,
+                owner: true
             }
         });
-
         if (!post) {
             return NextResponse.json({ error: 'Post not found' }, { status: 404 });
         }
-
-        const userVote = post.voteRecords.length > 0 ? post.voteRecords[0] : null;
-
-        return NextResponse.json({ post, userVote });
+        return NextResponse.json({ post });
     } catch (error) {
         console.log(error);
         return NextResponse.json({ error: 'An error occurred' }, { status: 500 });

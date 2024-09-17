@@ -4,47 +4,48 @@ import { NextResponse, NextRequest } from 'next/server'
 const prisma = new PrismaClient()
 
 export async function POST(req: NextRequest) {
-    const data = await req.json()    
-    const userId = data.userId;
-
+    const data = await req.json()
+    const userId = data.userId; 
+    const postId = data.postId;     
     try {
-        const existingPost = await prisma.comment.findUnique({
+        // Fetch the current likes array from the post
+        const existingPost = await prisma.comment.findFirst({
             where: {
-                id: data.commentId ? data.commentId : ''
+                id: postId ? postId : ''
             },
             select: {
-                likes: true,
-                dislikes: true, // Select dislikes to modify them as well
+                likes: true
             }
-        })
+        });
 
         if (!existingPost) {
             return NextResponse.json({ error: 'Post not found' }, { status: 404 });
         }
+        // Ensure likes is always an array
+        let currentLikes = existingPost.likes || []; // If likes is null, initialize as an empty array
 
-        // Update likes array
-        const updatedLikes = existingPost.likes.includes(userId)
-            ? existingPost.likes.filter(like => like !== userId)
-            : [...existingPost.likes, userId];
+        // Check if the userId exists in the likes array
+        if (currentLikes.includes(userId)) {            
+            currentLikes = currentLikes.filter(like => like !== userId);
+        } else {
+            // Add the userId if it doesn't exist
+            currentLikes.push(userId);
+        }
+
         
-        // Update dislikes array by removing the user if present
-        const updatedDislikes = existingPost.dislikes.includes(userId)
-            ? existingPost.dislikes.filter(dislike => dislike !== userId)
-            : existingPost.dislikes;
-
-        const updateLikesAndDislikes = await prisma.comment.update({
+        const updateLikes = await prisma.comment.update({
             where: {
-                id: data.commentId ? data.commentId : ''
+                id: postId ? postId : ''
             },
             data: {
-                likes: updatedLikes,
-                dislikes: updatedDislikes, // Include the updated dislikes array
+                likes: currentLikes,  // Ensure this array is valid
             },
-        })
+        });
 
-        return NextResponse.json({ update: updateLikesAndDislikes });
+    
+        return NextResponse.json({ update: updateLikes });
     } catch (error) {
         console.log(error);
-        return NextResponse.json({ error: 'An error occurred while updating likes and dislikes' }, { status: 500 });
+        return NextResponse.json({ error: 'An error occurred while updating likes' }, { status: 500 });
     }
 }

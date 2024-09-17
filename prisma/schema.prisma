@@ -11,6 +11,7 @@ model Post {
   id       String    @id @default(cuid())
   content  String?
   email    String?
+  userName String
   likes    String[]
   comments Comment[]
   date     DateTime
@@ -22,7 +23,7 @@ model Post {
 model User {
   id        String    @id @default(cuid())
   email     String    @unique
-  username  String
+  username  String?
   date      DateTime
   location  String?
   bio       String?
@@ -62,6 +63,7 @@ model Comment {
   id       String    @id @default(cuid())
   comment  String
   postId   String
+  likes    String[]
   userId   String
   username String
   date     DateTime  @default(now())

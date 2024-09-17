@@ -52,6 +52,7 @@ CREATE TABLE "comments" (
     "id" TEXT NOT NULL,
     "comment" TEXT NOT NULL,
     "postId" TEXT NOT NULL,
+    "likes" TEXT[],
     "userId" TEXT NOT NULL,
     "username" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

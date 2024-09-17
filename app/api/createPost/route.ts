@@ -13,6 +13,7 @@ export async function POST(req: Request) {
                 content: data.content,
                 date: new Date,
                 email: JSON.parse(data.email.toLowerCase()),
+                userName: data.userName
             }
         })
         return NextResponse.json({ hello: test });

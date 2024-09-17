@@ -61,11 +61,11 @@ model Message {
 
 model Comment {
   id       String    @id @default(cuid())
-  comment  String
+  content  String
   postId   String
   likes    String[]
   userId   String
-  username String
+  userName String
   date     DateTime  @default(now())
   post     Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)

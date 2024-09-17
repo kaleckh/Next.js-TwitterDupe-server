@@ -10,8 +10,8 @@ export async function POST(req: NextRequest) {
     try {        
         const newComment = await prisma.comment.create({
             data: {
-                comment: data.comment,
-                username: data.userName,
+                content: data.comment,
+                userName: data.userName,
                 postId: data.postId,
                 userId: data.userId,
                 parentId: data.commentId || null,                

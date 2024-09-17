@@ -3,6 +3,7 @@ CREATE TABLE "posts" (
     "id" TEXT NOT NULL,
     "content" TEXT,
     "email" TEXT,
+    "userName" TEXT NOT NULL,
     "likes" TEXT[],
     "date" TIMESTAMP(3) NOT NULL,
 
@@ -13,7 +14,7 @@ CREATE TABLE "posts" (
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "username" TEXT NOT NULL,
+    "username" TEXT,
     "date" TIMESTAMP(3) NOT NULL,
     "location" TEXT,
     "bio" TEXT,
@@ -50,11 +51,11 @@ CREATE TABLE "messages" (
 -- CreateTable
 CREATE TABLE "comments" (
     "id" TEXT NOT NULL,
-    "comment" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
     "postId" TEXT NOT NULL,
     "likes" TEXT[],
     "userId" TEXT NOT NULL,
-    "username" TEXT NOT NULL,
+    "userName" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "parentId" TEXT,
 

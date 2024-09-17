@@ -9,13 +9,14 @@ export async function GET(req: NextRequest) {
     
 
     try {
-        if (!id) {
+        if (!username) {
             return NextResponse.json({ error: 'ID is required' }, { status: 400 });
         }
 
         const comment = await prisma.comment.findMany({
-            where: {
-                username: username,  // Ensure id is correctly passed here
+            where: { username },
+            include: {
+                replies: true
             }
         });
 

@@ -11,7 +11,10 @@ export async function GET(req: NextRequest) {
                 email: id ? id : undefined,
             },
             include: {
-                comments: true,
+                comments: { include: {
+                    replies: true,
+                    
+                }},
                 posts: true
             },
         });

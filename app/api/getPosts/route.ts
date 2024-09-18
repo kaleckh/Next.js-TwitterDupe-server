@@ -4,13 +4,14 @@ import { NextResponse } from 'next/server';
 const prisma = new PrismaClient();
 
 export async function GET() {
+    console.log('hitting get for you posts')
     try {        
         const posts = await prisma.post.findMany({
             orderBy: {
                 date: 'desc',
             },
             include: {
-                comments: true, // Assumes your comments model is related to posts
+                comments: true, 
             },
         });
         console.log(posts, 'this is post info');

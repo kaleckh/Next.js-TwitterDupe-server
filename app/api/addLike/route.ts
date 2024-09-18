@@ -5,12 +5,10 @@ const prisma = new PrismaClient()
 
 export async function POST(req: NextRequest) {
     const data = await req.json()
-    
     const userId = data.userId; 
     const postId = data.postId; 
     console.log(postId, 'this is the data')
-    try {
-        // Fetch the current likes array from the post
+    try {        
         const existingPost = await prisma.post.findUnique({
             where: {
                 id: postId ? postId : ''

@@ -8,15 +8,15 @@ datasource db {
 }
 
 model Post {
-  id          String    @id @default(cuid())
-  content     String?
-  email       String?
-  userName    String
-  likes       String[]
-  comments    Comment[]
-  date        DateTime
-  owner       User?     @relation(fields: [email], references: [email])
-  repostedBy  User[]    @relation("UserReposts") // Users who reposted this post
+  id         String    @id @default(cuid())
+  content    String?
+  email      String?
+  userName   String
+  likes      String[]
+  comments   Comment[]
+  date       DateTime
+  owner      User?     @relation(fields: [email], references: [email])
+  repostedBy User[]    @relation("UserReposts") // Users who reposted this post
 
   @@map("posts")
 }
@@ -29,6 +29,7 @@ model User {
   date      DateTime
   location  String?
   bio       String?
+  links     String?
   followers String[]
   following String[]
   posts     Post[]
@@ -36,6 +37,7 @@ model User {
 
   @@map("users")
 }
+
 model Conversation {
   id        String    @id @default(cuid())
   me        String

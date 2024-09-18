@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
 
     const { data, error } = await supabase.storage
       .from('profile-images')
-      .upload('testing', file, {
+      .upload(file.name, file, {
         upsert: true,
         contentType: file.type
       });

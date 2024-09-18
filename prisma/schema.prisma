@@ -29,6 +29,7 @@ model User {
   date      DateTime
   location  String?
   bio       String?
+  color     String?
   links     String?
   followers String[]
   following String[]

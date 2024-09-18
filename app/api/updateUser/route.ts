@@ -12,6 +12,7 @@ export async function POST(req: NextRequest) {
             bio?: string;
             location?: string;
             links?: string;
+            color?: string;
         } = {};
 
         if (data.bio) {
@@ -24,6 +25,9 @@ export async function POST(req: NextRequest) {
 
         if (data.links) {
             updatedData.links = data.links;
+        }
+        if (data.color) {
+            updatedData.color = data.color;
         }
 
         // Update the user only with provided fields

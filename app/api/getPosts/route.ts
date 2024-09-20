@@ -12,6 +12,7 @@ export async function GET() {
             },
             include: {
                 comments: true, 
+                owner: true
             },
         });
         console.log(posts, 'this is post info');

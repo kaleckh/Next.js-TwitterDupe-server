@@ -15,7 +15,8 @@ export async function GET(req: NextRequest) {
                 date: 'desc',
             },
             include: {
-                comments: true, // Assumes your comments model is related to posts
+                comments: true,
+                owner: true // Assumes your comments model is related to posts
             },
         })
         console.log(test, "this is get all posts info")

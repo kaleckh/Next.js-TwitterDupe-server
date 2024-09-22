@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -25,7 +26,7 @@ model Post {
 model User {
   id        String    @id @default(cuid())
   email     String    @unique
-  username  String?
+  username  String
   reposts   Post[]    @relation("UserReposts") // Posts that the user has reposted
   date      DateTime
   location  String?

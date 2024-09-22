@@ -4,33 +4,44 @@ import { NextResponse, NextRequest } from 'next/server';
 const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
-    const data = await req.json();
-    console.log(data, 'update user data');
     try {
-        const updatedData: {
-            followers?: string[];
-            following?: string[];
-        } = {};
+        const data = await req.json();
 
-        // Check and update only specific fields
-        if (data.followers) {
-            updatedData.followers = data.followers;
+        // Destructure the incoming data
+        const { myId, theirId, theirFollowers, myFollowing } = data;
+
+        // Check that both IDs are provided
+        if (!myId || !theirId) {
+            return NextResponse.json({ error: 'Missing user IDs' }, { status: 400 });
         }
 
-        if (data.following) {
-            updatedData.following = data.following;
-        }
-
-        // Update the user with only the provided fields
-        const updateUser = await prisma.user.update({
+        // Update the "following" list of the current user
+        const updateMyFollowing = prisma.user.update({
             where: {
-                email: data.email.toLowerCase(), // Assuming email is unique and used for identification
+                id: myId,
             },
-            data: updatedData,
+            data: {
+                following: myFollowing || [], // Update with provided following list
+            },
         });
+
+        // Update the "followers" list of the other user
+        const updateTheirFollowers = prisma.user.update({
+            where: {
+                id: theirId,
+            },
+            data: {
+                followers: theirFollowers || [], // Update with provided followers list
+            },
+        });
+
+        // Execute both updates in parallel
+        await Promise.all([updateMyFollowing, updateTheirFollowers]);
+
+        return NextResponse.json({ message: 'Followers and following updated successfully' });
     } catch (error) {
-        console.error(error);
-        return NextResponse.json({ error: 'Failed to update user' }, { status: 500 });
+        console.error('Error updating user followers and following:', error);
+        return NextResponse.json({ error: 'Failed to update followers and following' }, { status: 500 });
     } finally {
         await prisma.$disconnect();
     }

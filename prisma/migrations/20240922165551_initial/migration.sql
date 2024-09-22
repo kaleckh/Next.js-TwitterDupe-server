@@ -18,6 +18,8 @@ CREATE TABLE "users" (
     "date" TIMESTAMP(3) NOT NULL,
     "location" TEXT,
     "bio" TEXT,
+    "color" TEXT,
+    "links" TEXT,
     "followers" TEXT[],
     "following" TEXT[],
 

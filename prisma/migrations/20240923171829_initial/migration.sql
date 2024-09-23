@@ -14,7 +14,7 @@ CREATE TABLE "posts" (
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "username" TEXT,
+    "username" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
     "location" TEXT,
     "bio" TEXT,

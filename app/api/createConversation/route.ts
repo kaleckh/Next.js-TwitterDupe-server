@@ -10,12 +10,10 @@ export async function POST(req: NextRequest) {
     try {
         const updateLikes = await prisma.conversation?.create({
             data: {
-
                 me: data.me,
                 roomName: data.roomName,
                 recipient: data.recipient,
                 date: new Date()
-
             }
         })
         await prisma.message.create({

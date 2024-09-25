@@ -7,12 +7,14 @@ export async function GET(req: NextRequest) {
     try {
         const email = req.nextUrl.searchParams.get('email')        
         
-        const test = await prisma.conversation.findMany({
+        const test = await prisma.user.findUnique({
             where:
             {
-                me: email || ''
+                email: email || ''
+            },
+            include: {
+                conversations: true
             }
-
         })
         console.log(test, 'test')
         return NextResponse.json({ Posts: test });

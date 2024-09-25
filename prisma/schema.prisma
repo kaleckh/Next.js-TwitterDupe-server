@@ -37,19 +37,28 @@ model User {
   following String[]
   posts     Post[]
   comments  Comment[]
+  conversations  UsersInConversations[]
 
   @@map("users")
 }
 
 model Conversation {
   id        String    @id @default(cuid())
-  me        String
   roomName  String
-  recipient String
   messages  Message[]
   date      DateTime
+  users     UsersInConversations[]
 
   @@map("conversations")
+}
+
+model UsersInConversations {
+  conversation     Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId   String
+  user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String
+
+  @@id([conversationId, userId])
 }
 
 model Message {

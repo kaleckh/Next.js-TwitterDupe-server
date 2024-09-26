@@ -38,13 +38,13 @@ model User {
   posts     Post[]
   comments  Comment[]
   conversations  UsersInConversations[]
+  messages  Message[]
 
   @@map("users")
 }
 
 model Conversation {
   id        String    @id @default(cuid())
-  roomName  String
   messages  Message[]
   date      DateTime
   users     UsersInConversations[]
@@ -67,9 +67,9 @@ model Message {
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   date           DateTime     @default(now())
   message        String
-  userName       String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
   status         String
-  recipient      String
 
   @@map("messages")
 }

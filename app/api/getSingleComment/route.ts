@@ -13,7 +13,8 @@ export async function GET(req: NextRequest) {
             },
             include: {
                 replies: true,
-                user: true
+                user: true,
+                parent: true
             }
         });
         if (!comment) {

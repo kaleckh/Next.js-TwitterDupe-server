@@ -7,32 +7,49 @@ export async function POST(req: NextRequest) {
     try {
         const data = await req.json();
 
-        // Destructure the incoming data
-        const { myId, theirId, theirFollowers, myFollowing } = data;
+        const { myId, theirId } = data;
 
         // Check that both IDs are provided
         if (!myId || !theirId) {
             return NextResponse.json({ error: 'Missing user IDs' }, { status: 400 });
         }
 
-        // Update the "following" list of the current user
+        // Retrieve the current user and the target user from the database
+        const [myUser, theirUser] = await Promise.all([
+            prisma.user.findUnique({ where: { id: myId } }),
+            prisma.user.findUnique({ where: { id: theirId } })
+        ]);
+
+        // If either user does not exist, return an error
+        if (!myUser || !theirUser) {
+            return NextResponse.json({ error: 'User not found' }, { status: 404 });
+        }
+
+        // Update following list for the current user
+        let updatedMyFollowing = myUser.following || [];
+        if (updatedMyFollowing.includes(theirId)) {
+            updatedMyFollowing = updatedMyFollowing.filter(id => id !== theirId); // Remove their ID if it exists
+        } else {
+            updatedMyFollowing.push(theirId); // Add their ID if it doesn't exist
+        }
+
+        // Update followers list for the target user
+        let updatedTheirFollowers = theirUser.followers || [];
+        if (updatedTheirFollowers.includes(myId)) {
+            updatedTheirFollowers = updatedTheirFollowers.filter(id => id !== myId); // Remove my ID if it exists
+        } else {
+            updatedTheirFollowers.push(myId); // Add my ID if it doesn't exist
+        }
+
+        // Update both users in the database
         const updateMyFollowing = prisma.user.update({
-            where: {
-                id: myId,
-            },
-            data: {
-                following: myFollowing || [], // Update with provided following list
-            },
+            where: { id: myId },
+            data: { following: updatedMyFollowing }
         });
 
-        // Update the "followers" list of the other user
         const updateTheirFollowers = prisma.user.update({
-            where: {
-                id: theirId,
-            },
-            data: {
-                followers: theirFollowers || [], // Update with provided followers list
-            },
+            where: { id: theirId },
+            data: { followers: updatedTheirFollowers }
         });
 
         // Execute both updates in parallel

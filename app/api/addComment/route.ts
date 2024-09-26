@@ -7,17 +7,17 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     console.log(data, "this is the data");
 
-    try {        
+    try {
         const newComment = await prisma.comment.create({
             data: {
                 content: data.comment,
                 userName: data.userName,
                 postId: data.postId,
                 userId: data.userId,
-                parentId: data.commentId || null,                
+                parentId: data.commentId ? data.commentId : null,
             },
         });
-    
+
         const allComments = await prisma.comment.findMany({
             where: {
                 postId: data.postId,

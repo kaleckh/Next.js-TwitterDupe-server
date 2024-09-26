@@ -5,15 +5,15 @@ const prisma = new PrismaClient()
 
 export async function POST(req: NextRequest) {
     const data = await req.json()
-    console.log(data.id, 'this is comment id')
+    console.log(data.id)
     try {
-        const deleteConvo = await prisma.comment.delete({
+        const deleteConvo = await prisma.post.delete({
             where: {
-                id: data.id || ''
+                id: data.postId || ''
             },
 
         })
-        return await NextResponse.json({ update: deleteConvo });
+        return await NextResponse.json(deleteConvo);
     } catch (error) {
         console.log(error)
     }

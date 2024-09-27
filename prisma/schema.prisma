@@ -70,7 +70,6 @@ model Message {
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String
   status         String
-
   @@map("messages")
 }
 

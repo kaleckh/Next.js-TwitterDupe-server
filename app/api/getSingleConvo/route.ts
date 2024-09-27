@@ -9,10 +9,13 @@ export async function GET(req: NextRequest) {
         const test = await prisma.conversation.findFirst({
             where: {
                 id: id || ''
+            },
+            include: {
+                users: true
             }
         })
         console.log(test, 'this is the test')
-        return NextResponse.json({ Posts: test });
+        return NextResponse.json( test );
     } catch (error) {
         console.log(error)
     }

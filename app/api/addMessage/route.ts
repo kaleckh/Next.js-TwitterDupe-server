@@ -9,22 +9,16 @@ export async function POST(req: NextRequest) {
     console.log(data, 'this is the important data')
     try {
         const updateLikes = await prisma.message.create({
-            data: {
-                id: data.id,
+            data: {                
                 conversationId: data.conversationId || '',
                 message: data.messages,
-                date: new Date(),
-                userName: data.userName,
-                status: data.status,
-                recipient: data.recipient
+                date: new Date(),                
+                userId: data.userId,
+                status: "Delivered",                
             },
-
         });
-
         return await NextResponse.json({ update: updateLikes });
     } catch (error) {
         console.log(error)
     }
 }
-
-// ...(data.messages && { message: data.messages }), 

@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
                 conversationId: data.conversationId || '',
                 message: data.messages,
                 date: new Date(),                
-                userId: data.userId,
+                userId: data.id,
                 status: "Delivered",                
             },
         });

@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
                 },
                 messages: {
                     orderBy: {
-                        date: 'asc'
+                        date: 'desc'
                     }
                 }
             }

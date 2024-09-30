@@ -8,7 +8,10 @@ export async function POST(req: NextRequest) {
     try {
         const updateLikes = await prisma.message.updateMany({
             where: {
-                conversationId: data.conversationId
+                conversationId: data.conversationId,
+                userId: {
+                    not: data.userId
+                }
             },
             data: {
                 status: "Read"

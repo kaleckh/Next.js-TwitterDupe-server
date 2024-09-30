@@ -16,9 +16,9 @@ model Post {
   userName   String
   likes      String[]
   comments   Comment[]
-  date       DateTime
+  date       DateTime  @default(now())
   owner      User?     @relation(fields: [email], references: [email])
-  repostedBy User[]    @relation("UserReposts") // Users who reposted this post
+  reposts    Repost[]  // Relation to Repost model
 
   @@map("posts")
 }
@@ -27,8 +27,8 @@ model User {
   id        String    @id @default(cuid())
   email     String    @unique
   username  String
-  reposts   Post[]    @relation("UserReposts") // Posts that the user has reposted
-  date      DateTime
+  reposts   Repost[]  // Reposts the user has made
+  date      DateTime  @default(now())
   location  String?
   bio       String?
   color     String?
@@ -43,10 +43,21 @@ model User {
   @@map("users")
 }
 
+model Repost {
+  id         String    @id @default(cuid())
+  postId     String
+  post       Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date       DateTime  @default(now())  // Date when the post was reposted
+
+  @@map("reposts")
+}
+
 model Conversation {
   id        String    @id @default(cuid())
   messages  Message[]
-  date      DateTime
+  date      DateTime  @default(now())
   users     UsersInConversations[]
 
   @@map("conversations")
@@ -83,7 +94,7 @@ model Comment {
   date     DateTime  @default(now())
   post     Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  parentId String? // Nullable field for the parent comment
+  parentId String?   // Nullable field for the parent comment
   parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
   replies  Comment[] @relation("CommentReplies")
 

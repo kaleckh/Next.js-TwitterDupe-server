@@ -21,8 +21,7 @@ export async function GET(req: NextRequest) {
                     include: {
                         post: {  // Include the full reposted post details
                             include: {
-                                comments: true,  // Optionally include comments on the reposted post
-                                owner: true,      // Include the owner of the original post
+                                comments: true,  // Optionally include comments on the reposted post                                
                             },
                         },
                         user: true,  // Include the user who made the repost

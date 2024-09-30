@@ -26,7 +26,8 @@ export async function GET(req: NextRequest) {
             },
             include: {
                 comments: true,
-                owner: true
+                owner: true,
+                reposts: true
             },
         });
         console.log(posts, 'this is post info');

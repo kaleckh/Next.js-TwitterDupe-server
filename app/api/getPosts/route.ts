@@ -4,18 +4,18 @@ import { NextRequest, NextResponse } from 'next/server';
 const prisma = new PrismaClient();
 
 export async function GET(req: NextRequest) {
-    const origin = req.headers.get('origin');
+    // const origin = req.headers.get('origin');
 
-    // Add CORS headers to allow specific domains or all domains
-    const headers = new Headers();
-    headers.set('Access-Control-Allow-Origin', origin || '*'); // Allow all domains or restrict to specific origin
-    headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); // Allow specific methods
-    headers.set('Access-Control-Allow-Headers', 'Content-Type');
+    // // Add CORS headers to allow specific domains or all domains
+    // const headers = new Headers();
+    // headers.set('Access-Control-Allow-Origin', origin || '*'); // Allow all domains or restrict to specific origin
+    // headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); // Allow specific methods
+    // headers.set('Access-Control-Allow-Headers', 'Content-Type');
 
     if (req.method === 'OPTIONS') {
         // Handle preflight requests
         return new Response(null, {
-            headers,
+            // headers,
             status: 204,
         });
     }
@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
             include: {
                 comments: true,
                 owner: true,
-                reposts: true
+                // reposts: true
             },
         });
         console.log(posts, 'this is post info');

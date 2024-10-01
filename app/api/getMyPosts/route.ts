@@ -17,16 +17,16 @@ export async function GET(req: NextRequest) {
             include: {
                 comments: true,
                 owner: true,
-                reposts: {
-                    include: {
-                        post: {  // Include the full reposted post details
-                            include: {
-                                comments: true,  // Optionally include comments on the reposted post                                
-                            },
-                        },
-                        user: true,  // Include the user who made the repost
-                    },
-                },
+                // reposts: {
+                //     include: {
+                //         post: {  // Include the full reposted post details
+                //             include: {
+                //                 comments: true,  // Optionally include comments on the reposted post                                
+                //             },
+                //         },
+                //         user: true,  // Include the user who made the repost
+                //     },
+                // },
             },
         });
 

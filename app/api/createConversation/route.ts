@@ -13,10 +13,7 @@ export async function POST(req: NextRequest) {
       where: {
         users: {
           every: {
-            OR: [
-              { userId: data.myId },
-              { userId: data.recipientId }
-            ],
+            OR: [{ userId: data.myId }, { userId: data.recipientId }],
           },
         },
       },
@@ -65,12 +62,11 @@ export async function POST(req: NextRequest) {
 
     // Return the new conversation id
     return NextResponse.json({ conversationId: newConversation.id });
-
   } catch (error) {
     console.log(error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

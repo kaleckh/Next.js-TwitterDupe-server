@@ -1,20 +1,19 @@
-import { PrismaClient } from '@prisma/client'
-import { NextResponse, NextRequest } from 'next/server'
+import { PrismaClient } from "@prisma/client";
+import { NextResponse, NextRequest } from "next/server";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
-    const data = await req.json()
-    console.log(data.id, 'this is comment id')
-    try {
-        const deleteConvo = await prisma.comment.delete({
-            where: {
-                id: data.id || ''
-            },
-
-        })
-        return await NextResponse.json({ update: deleteConvo });
-    } catch (error) {
-        console.log(error)
-    }
-}   
+  const data = await req.json();
+  console.log(data.id, "this is comment id");
+  try {
+    const deleteConvo = await prisma.comment.delete({
+      where: {
+        id: data.id || "",
+      },
+    });
+    return await NextResponse.json({ update: deleteConvo });
+  } catch (error) {
+    console.log(error);
+  }
+}

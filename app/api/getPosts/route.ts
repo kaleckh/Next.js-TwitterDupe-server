@@ -33,8 +33,9 @@ export async function GET(req: NextRequest) {
     });
     //@ts-ignore
     const query = [...posts, ...reposts].sort(
-      (a, b) => new Date(b.date) - new Date(a.date),
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
+    
 
     console.log(query, "this is post info");
     return NextResponse.json({ Posts: query });

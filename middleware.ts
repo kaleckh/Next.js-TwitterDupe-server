@@ -3,8 +3,7 @@ import { NextResponse } from "next/server";
 export function middleware(req: any) {
   const origin = req.headers.get("origin");
   const allowedOrigins = [
-    "https://your-frontend-domain.com",
-    "https://another-allowed-domain.com",
+    "*"
   ];
 
   const response = NextResponse.next();

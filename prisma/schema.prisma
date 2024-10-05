@@ -29,6 +29,7 @@ model User {
   username  String
   reposts   Repost[]  // Reposts the user has made
   date      DateTime  @default(now())
+  blurhash  String?
   location  String?
   bio       String?
   color     String?

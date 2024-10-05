@@ -15,6 +15,9 @@ export async function GET(req: NextRequest) {
       where: {
         postId: id, // Ensure id is correctly passed here
       },
+      include: {
+        user: true
+      }
     });
 
     if (!comment) {

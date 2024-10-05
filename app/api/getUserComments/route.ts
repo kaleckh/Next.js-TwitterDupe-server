@@ -10,6 +10,9 @@ export async function GET(req: NextRequest) {
       where: {
         userId: id || "",
       },
+      include: {
+        user: true
+      }
     });
     console.log(test, "this is the test");
     return NextResponse.json({ Posts: test });

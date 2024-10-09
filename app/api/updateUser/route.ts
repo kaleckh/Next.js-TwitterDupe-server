@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  console.log(data, "update user data");
   try {
     const updatedData: {
       bio?: string;
@@ -37,7 +36,6 @@ export async function POST(req: NextRequest) {
       data: updatedData,
     });
 
-    console.log(updateUser, "User updated successfully");
     return NextResponse.json({ update: updateUser });
   } catch (error) {
     console.log(error);

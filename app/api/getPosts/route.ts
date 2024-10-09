@@ -38,8 +38,6 @@ export async function GET(req: NextRequest) {
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
       
-  
-      console.log(query, "this is post info");
       return NextResponse.json({ Posts: query });
     } catch (error) {
       console.log(error);
@@ -97,8 +95,6 @@ export async function GET(req: NextRequest) {
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
       
-  
-      console.log(query, "this is post info");
       return NextResponse.json({ Posts: query });
     } catch (error) {
       console.log(error);

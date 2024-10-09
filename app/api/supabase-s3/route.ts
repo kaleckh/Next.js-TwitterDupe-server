@@ -21,8 +21,8 @@ export async function POST(req: NextRequest) {
     const id = req.nextUrl.searchParams.get("id");
     const requestData = await req.formData();
     const file = requestData.get("image");
-
-    console.log(file, "this is the image");
+    //@ts-ignore
+    console.log({...file}, "this is the image");
 
     if (!file || !(file instanceof Blob)) {
       console.error("File is not found or not of type Blob");
@@ -31,6 +31,8 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    console.log('i hit past type guard')
 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);

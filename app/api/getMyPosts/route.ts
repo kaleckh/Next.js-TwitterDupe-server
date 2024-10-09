@@ -44,7 +44,6 @@ export async function GET(req: NextRequest) {
         post: true,
       },
     });
-    console.log(reposts, "repost info");
     return NextResponse.json({ posts, reposts });
   } catch (error) {
     console.log(error);

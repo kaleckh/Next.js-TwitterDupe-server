@@ -20,7 +20,6 @@ export async function GET(req: NextRequest) {
         posts: true,
       },
     });
-    console.log(user, "this is a user with comments");
     return NextResponse.json({ user });
   } catch (error) {
     console.log(error);

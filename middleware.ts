@@ -2,9 +2,7 @@ import { NextResponse } from "next/server";
 
 export function middleware(req: any) {
   const origin = req.headers.get("origin");
-  const allowedOrigins = [
-    "*"
-  ];
+  const allowedOrigins = ["*"];
 
   const response = NextResponse.next();
 

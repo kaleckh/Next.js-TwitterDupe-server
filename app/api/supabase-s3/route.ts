@@ -1,9 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 import { encode } from "blurhash";
-import sharp from "sharp";// pages/api/upload.js
+import sharp from "sharp"; // pages/api/upload.js
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       console.error("File is not found or not of type Blob");
       return NextResponse.json(
         { error: "File not found or invalid type" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -40,15 +40,15 @@ export async function POST(req: NextRequest) {
         .raw()
         .toBuffer();
       const blurhash = encode(Uint8ClampedArray.from(buf), 64, 64, 4, 4);
-      if(!id) throw new Error('no user')
+      if (!id) throw new Error("no user");
       await prisma.user.update({
         where: { id },
         data: {
-          blurhash
-        }
-      })
+          blurhash,
+        },
+      });
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
 
     const { data, error } = await supabase.storage
@@ -65,13 +65,13 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       { message: "Upload successful", data },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Unexpected error:", error);
     return NextResponse.json(
       { error: "An unexpected error occurred" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

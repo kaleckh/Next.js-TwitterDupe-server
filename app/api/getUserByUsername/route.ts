@@ -9,8 +9,8 @@ export async function GET(req: NextRequest) {
   try {
     const user = await prisma.user.findFirst({
       where: {
-        username
-      }
+        username,
+      },
     });
     return NextResponse.json({ user });
   } catch (error) {

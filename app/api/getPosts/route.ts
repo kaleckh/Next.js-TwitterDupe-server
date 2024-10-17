@@ -4,8 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
 export async function GET(req: NextRequest) {
-  const userId = req.nextUrl.searchParams.get("id")
-  if(!userId) {
+  const userId = req.nextUrl.searchParams.get("id");
+  if (!userId) {
     try {
       const posts = await prisma.post.findMany({
         orderBy: {
@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
           reposts: true,
         },
       });
-  
+
       const reposts = await prisma.repost.findMany({
         orderBy: {
           date: "desc",
@@ -35,9 +35,9 @@ export async function GET(req: NextRequest) {
       });
       //@ts-ignore
       const query = [...posts, ...reposts].sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
       );
-      
+
       return NextResponse.json({ Posts: query });
     } catch (error) {
       console.log(error);
@@ -49,16 +49,16 @@ export async function GET(req: NextRequest) {
   } else {
     const user = await prisma.user.findUnique({
       where: { id: userId },
-    })
+    });
 
-    if(!user) throw new Error('user no exist')
+    if (!user) throw new Error("user no exist");
 
     try {
       const posts = await prisma.post.findMany({
         where: {
           owner: {
-            id: { in: [...user.following, userId] }
-          }
+            id: { in: [...user.following, userId] },
+          },
         },
         orderBy: {
           date: "desc",
@@ -69,12 +69,12 @@ export async function GET(req: NextRequest) {
           reposts: true,
         },
       });
-  
+
       const reposts = await prisma.repost.findMany({
         where: {
           userId: {
-            in: [...user.following, userId]
-          }
+            in: [...user.following, userId],
+          },
         },
         orderBy: {
           date: "desc",
@@ -92,9 +92,9 @@ export async function GET(req: NextRequest) {
       });
       //@ts-ignore
       const query = [...posts, ...reposts].sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
       );
-      
+
       return NextResponse.json({ Posts: query });
     } catch (error) {
       console.log(error);

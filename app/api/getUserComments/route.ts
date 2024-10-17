@@ -11,8 +11,8 @@ export async function GET(req: NextRequest) {
         userId: id || "",
       },
       include: {
-        user: true
-      }
+        user: true,
+      },
     });
     console.log(test, "this is the test");
     return NextResponse.json({ Posts: test });

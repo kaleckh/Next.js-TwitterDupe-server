@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   try {
     const lowerCaseData = {
       email: data.email.toLowerCase(),
-      username: data.username.toLowerCase(),
+      username: data.username,
       followers: [],
       following: [],
       date: new Date(),

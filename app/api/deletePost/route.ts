@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
         id: data.postId || "",
       },
     });
-    return await NextResponse.json(deleteConvo);
+    return NextResponse.json(deleteConvo);
   } catch (error) {
     console.log(error);
   }

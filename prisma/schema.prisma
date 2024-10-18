@@ -45,13 +45,13 @@ model User {
 }
 
 model Repost {
-  id         String    @id @default(cuid())
   postId     String
   post       Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   userId     String
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   date       DateTime  @default(now())  // Date when the post was reposted
 
+  @@id([userId, postId])
   @@map("reposts")
 }
 

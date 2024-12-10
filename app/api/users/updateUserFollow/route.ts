@@ -46,6 +46,7 @@ export async function POST(req: NextRequest) {
       where: { id: myId },
       data: { following: updatedMyFollowing },
     });
+    
 
     const updateTheirFollowers = prisma.user.update({
       where: { id: theirId },

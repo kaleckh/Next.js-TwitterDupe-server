@@ -34,8 +34,7 @@ export async function GET(req: NextRequest) {
           },
         },
       },
-    });
-    console.log(test, "these are the conversations");
+    });    
     return NextResponse.json(test);
   } catch (error) {
     console.log(error);

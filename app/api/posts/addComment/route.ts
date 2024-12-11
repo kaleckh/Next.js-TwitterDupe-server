@@ -5,20 +5,21 @@ const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
+  console.log(data, 'this is the data')
   try {
     const newComment = await prisma.comment.create({
       data: {
         content: data.comment,
         userName: data.userName,
-        postId: data.postId,
+        postId: data.parent_post_id,
         userId: data.userId,
-        parentId: data.commentId ? data.commentId : null,
+        parentId: data.parent_id ? data.parent_id : null,
       },
     });
 
     const allComments = await prisma.comment.findMany({
       where: {
-        postId: data.postId,
+        postId: data.parent_id,
       },
       orderBy: {
         date: "asc", 

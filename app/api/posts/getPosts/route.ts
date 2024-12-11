@@ -12,7 +12,11 @@ export async function GET(req: NextRequest) {
           date: "desc",
         },
         include: {
-          comments: true,
+          comments: {
+            include: {
+              replies: true
+            }
+          },
           owner: true,
           reposts: true,
         },
@@ -64,7 +68,11 @@ export async function GET(req: NextRequest) {
           date: "desc",
         },
         include: {
-          comments: true,
+          comments: {
+            include: {
+              replies: true
+            }
+          },
           owner: true,
           reposts: true,
         },

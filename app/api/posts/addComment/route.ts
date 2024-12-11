@@ -5,8 +5,6 @@ const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  console.log(data, "this is the data");
-
   try {
     const newComment = await prisma.comment.create({
       data: {
@@ -23,11 +21,10 @@ export async function POST(req: NextRequest) {
         postId: data.postId,
       },
       orderBy: {
-        date: "asc", // Order comments by date in ascending order
+        date: "asc", 
       },
     });
 
-    // Return the updated list of comments and the color associated with the vote
     return NextResponse.json({ comments: allComments });
   } catch (error) {
     console.log(error);

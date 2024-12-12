@@ -40,6 +40,7 @@ model User {
   comments  Comment[]
   conversations  UsersInConversations[]
   messages  Message[]
+  repostedcomments RepostedComment[]
 
   @@map("users")
 }
@@ -53,6 +54,17 @@ model Repost {
 
   @@id([userId, postId])
   @@map("reposts")
+}
+
+model RepostedComment {
+  commentId  String
+  comment    Comment   @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date       DateTime  @default(now())  // Date when the post was reposted
+
+  @@id([userId, commentId])
+  @@map("repostedcomments")
 }
 
 model Conversation {
@@ -98,6 +110,7 @@ model Comment {
   parentId String? 
   parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
   replies  Comment[] @relation("CommentReplies")
+  repostedcomments RepostedComment[]
 
   @@map("comments")
 }

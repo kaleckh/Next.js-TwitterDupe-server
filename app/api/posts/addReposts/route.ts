@@ -8,15 +8,27 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     console.log(data, "this is the important data");
 
-    const updateLikes = await prisma.repost.create({
-      data: {
-        postId: data.postId,
-        userId: data.userId,
-        date: new Date(),
-      },
-    });
+    if (data.postId) {
+      const updateLikes = await prisma.repost.create({
+        data: {
+          postId: data.postId,
+          userId: data.userId,
+          date: new Date(),
+        },
+      });
 
-    return NextResponse.json({ update: updateLikes });
+      return NextResponse.json({ update: updateLikes });
+    } else {
+      const updateLikes = await prisma.repostedComment.create({
+        data: {
+          commentId: data.commentId,
+          userId: data.userId,
+          date: new Date(),
+        },
+      });
+
+      return NextResponse.json({ update: updateLikes })
+    }
   } catch (error) {
     console.log(error);
     return NextResponse.json(

@@ -13,9 +13,26 @@ export async function GET(req: NextRequest) {
       },
       include: {
         comments: {
+          orderBy: {
+            date: 'desc'
+          },
           include: {
             replies: true,
+            user: true
           },
+        },
+        repostedcomments: {
+          orderBy: {
+            date: 'desc'
+          },
+          include: {
+            comment: {
+              include: {
+                replies: true,
+                user:true
+              }
+            }
+          }
         },
         posts: true,
       },

@@ -11,9 +11,9 @@ export async function POST(req: NextRequest) {
       data: {
         content: data.comment,
         userName: data.userName,
-        postId: data.parent_post_id,
+        postId: data.postId,
         userId: data.userId,
-        parentId: data.parent_id ? data.parent_id : null,
+        parentId: data.commentId ? data.commentId : null,
       },
     });
 

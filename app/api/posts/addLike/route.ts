@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
   const data = await req.json();
   const userId = data.userId;
   const postId = data.postId;
-  console.log(postId, "this is the data");
+  console.log(userId, "this is the data");
   try {
     const existingPost = await prisma.post.findUnique({
       where: {
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
     // Ensure likes is always an array
     let currentLikes = existingPost.likes || []; // If likes is null, initialize as an empty array
-
+    console.log(userId, 'user id')
     // Check if the userId exists in the likes array
     if (currentLikes.includes(userId)) {
       // Remove the userId if it exists
@@ -34,13 +34,13 @@ export async function POST(req: NextRequest) {
       currentLikes.push(userId);
     }
 
-    // Update the likes array in the database
+   console.log(currentLikes, 'current likes')
     const updateLikes = await prisma.post.update({
       where: {
         id: postId ? postId : "",
       },
       data: {
-        likes: currentLikes, // Ensure this array is valid
+        likes: currentLikes, 
       },
     });
 

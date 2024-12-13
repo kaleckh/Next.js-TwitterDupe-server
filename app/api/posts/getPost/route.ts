@@ -13,19 +13,24 @@ export async function GET(req: NextRequest) {
       },
       include: {
         comments: {
+          where: {
+            parentId: null, // Only include comments with no parent
+          },
           include: {
             user: true,            
             replies: true,
-            repostedcomments: true
+            repostedcomments: true,
           },
         },
         owner: true,
-        reposts: true
+        reposts: true,
       },
     });
+
     if (!post) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
+
     return NextResponse.json({ post });
   } catch (error) {
     console.log(error);

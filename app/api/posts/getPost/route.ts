@@ -14,10 +14,10 @@ export async function GET(req: NextRequest) {
       include: {
         comments: {
           where: {
-            parentId: null, // Only include comments with no parent
+            parentId: null, 
           },
           include: {
-            user: true,            
+            user: true,
             replies: true,
             repostedcomments: true,
           },

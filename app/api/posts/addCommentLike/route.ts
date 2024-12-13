@@ -21,14 +21,10 @@ export async function POST(req: NextRequest) {
     if (!existingPost) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
-    // Ensure likes is always an array
-    let currentLikes = existingPost.likes || []; // If likes is null, initialize as an empty array
-
-    // Check if the userId exists in the likes array
+    let currentLikes = existingPost.likes || [];
     if (currentLikes.includes(userId)) {
       currentLikes = currentLikes.filter((like) => like !== userId);
     } else {
-      // Add the userId if it doesn't exist
       currentLikes.push(userId);
     }
 

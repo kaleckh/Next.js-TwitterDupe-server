@@ -15,10 +15,10 @@ model Post {
   email    String?
   userName String
   likes    String[]
-  date     DateTime  @default(now())
   comments Comment[]
+  date     DateTime  @default(now())
   owner    User?     @relation(fields: [email], references: [email])
-  reposts  Repost[]
+  reposts  Repost[] // Relation to Repost model
 
   @@map("posts")
 }
@@ -27,6 +27,7 @@ model User {
   id               String                 @id @default(cuid())
   email            String                 @unique
   username         String                 @unique
+  reposts          Repost[] // Reposts the user has made
   date             DateTime               @default(now())
   blurhash         String?
   location         String?
@@ -35,10 +36,10 @@ model User {
   links            String?
   followers        String[]
   following        String[]
-  conversations    UsersInConversations[]
-  comments         Comment[]
-  messages         Message[]
   posts            Post[]
+  comments         Comment[]
+  conversations    UsersInConversations[]
+  messages         Message[]
   repostedcomments RepostedComment[]
   reposts          Repost[]
 
@@ -47,10 +48,10 @@ model User {
 
 model Repost {
   postId String
-  userId String
-  date   DateTime @default(now())
   post   Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId String
   user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date   DateTime @default(now()) // Date when the post was reposted
 
   @@id([userId, postId])
   @@map("reposts")
@@ -58,10 +59,10 @@ model Repost {
 
 model RepostedComment {
   commentId String
-  userId    String
-  date      DateTime @default(now())
   comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date      DateTime @default(now()) // Date when the post was reposted
 
   @@id([userId, commentId])
   @@map("repostedcomments")
@@ -69,18 +70,18 @@ model RepostedComment {
 
 model Conversation {
   id       String                 @id @default(cuid())
+  messages Message[]
   date     DateTime               @default(now())
   users    UsersInConversations[]
-  messages Message[]
 
   @@map("conversations")
 }
 
 model UsersInConversations {
-  conversationId String
-  userId         String
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId String
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
 
   @@id([conversationId, userId])
 }
@@ -92,8 +93,6 @@ model Message {
   message        String
   userId         String
   status         String
-  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("messages")
 }
@@ -106,12 +105,21 @@ model Comment {
   userId           String
   userName         String
   date             DateTime          @default(now())
+  post             Post              @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   parentId         String?
   parent           Comment?          @relation("CommentReplies", fields: [parentId], references: [id])
   replies          Comment[]         @relation("CommentReplies")
-  post             Post              @relation(fields: [postId], references: [id], onDelete: Cascade)
-  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   repostedcomments RepostedComment[]
 
   @@map("comments")
+}
+
+model PortfolioData {
+  id      String   @id @default(cuid())
+  date    DateTime
+  ip      String   @unique 
+  counter Int
+
+  @@map("ip")
 }

@@ -12,7 +12,11 @@ export async function GET(req: NextRequest) {
         id: commentId ? commentId : undefined,
       },
       include: {
-        replies: true,
+        replies: {
+          include: {
+            replies: true
+          }
+        },
         user: true,
         parent: true,
       },

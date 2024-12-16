@@ -12,9 +12,11 @@ export async function GET(req: NextRequest) {
         id: commentId ? commentId : undefined,
       },
       include: {
+        repostedcomments: true,
         replies: {
           include: {
-            replies: true
+            replies: true,
+            repostedcomments: true
           }
         },
         user: true,

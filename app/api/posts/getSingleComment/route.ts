@@ -16,7 +16,8 @@ export async function GET(req: NextRequest) {
         replies: {
           include: {
             replies: true,
-            repostedcomments: true
+            repostedcomments: true,
+            user: true
           }
         },
         user: true,

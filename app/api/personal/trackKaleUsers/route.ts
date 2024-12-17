@@ -13,7 +13,8 @@ export async function POST(req: NextRequest) {
             // If IP exists, update the counter by incrementing it
             await prisma.portfolioData.update({
                 where: { ip: data.ip },
-                data: { counter: existingEntry.counter + 1 },
+                data: { counter: existingEntry.counter + 1, date: new Date() },
+
             });
             return NextResponse.json("Counter updated successfully");
         } else {

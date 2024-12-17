@@ -120,6 +120,4 @@ model PortfolioData {
   date    DateTime
   ip      String   @unique 
   counter Int
-
-  @@map("ip")
 }
